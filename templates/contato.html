@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Contato{% endblock %}
+{% block content %}
+    <h1>Contato</h1>
+    <p>Entre em contato com a secretaria da FaTech.</p>
+
+    <table>
+      <tr><th style="width:140px">Endereço</th><td>São José dos Campos – SP</td></tr>
+      <tr><th>E-mail</th><td>contato@fatech.example</td></tr>
+      <tr><th>Atendimento</th><td>Segunda a sexta, das 8h às 21h</td></tr>
+    </table>
+
+    <h2>Envie uma mensagem</h2>
+    <form action="{{ url_for('enviar') }}" method="post">
+      <input type="hidden" name="origem" value="contato">
+      <label for="nome">Nome</label>
+      <input type="text" id="nome" name="nome" required>
+      <label for="email">E-mail</label>
+      <input type="email" id="email" name="email" required>
+      <label for="msg">Mensagem</label>
+      <textarea id="msg" name="msg" required></textarea>
+      <br><button class="botao azul" type="submit">Enviar</button>
+    </form>
+{% endblock %}

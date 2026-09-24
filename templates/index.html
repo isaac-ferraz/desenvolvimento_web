@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Seu futuro começa aqui{% endblock %}
+{% block content %}
+    <h1>FaTech – A Faculdade do Futuro</h1>
+    <p>Seja bem-vindo(a) à FaTech!</p>
+
+    <div class="hero"><img src="{{ url_for('static', filename='img/banner.jpg') }}" alt="Fachada da FaTech com estudantes ao fundo"></div>
+
+    <h2>Sobre a FaTech</h2>
+    <p>A FaTech é uma instituição de ensino superior comprometida com a excelência acadêmica e a formação de profissionais capacitados para enfrentar os desafios do mercado de trabalho.</p>
+
+    <div class="destaque laranja">
+      <strong>Vestibular aberto.</strong> Garanta sua vaga nos cursos superiores de tecnologia.
+      <br><br><a class="botao" href="{{ url_for('vestibular') }}">Inscreva-se</a>
+    </div>
+
+    <svg class="circuito" viewBox="0 0 600 12" preserveAspectRatio="none" width="100%" height="12" aria-hidden="true">
+    <path d="M0 6 H220 L232 2 H300 L308 6 H600" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="232" cy="2" r="2.5" fill="#fff" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="308" cy="6" r="2.5" fill="#f28c28" stroke="#f28c28"/>
+  </svg>
+
+    <h2>Cursos em destaque</h2>
+    <div class="lista-cursos">
+      <a href="{{ url_for('cursos') }}"><strong>Desenvolvimento de Software Multiplataforma</strong><span>Tecnólogo · 3 anos · Noturno</span></a>
+      <a href="{{ url_for('cursos') }}"><strong>Análise e Desenvolvimento de Sistemas</strong><span>Tecnólogo · 3 anos · Matutino</span></a>
+      <a href="{{ url_for('cursos') }}"><strong>Gestão da Tecnologia da Informação</strong><span>Tecnólogo · 3 anos · Noturno</span></a>
+    </div>
+
+    <h2>Últimas notícias</h2>
+    {% set lista = ultimas %}{% include "_lista_noticias.html" %}
+    <p><a href="{{ url_for('noticias') }}">Ver todas as notícias &raquo;</a></p>
+{% endblock %}

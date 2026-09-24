@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Institucional{% endblock %}
+{% block content %}
+    <h1>Institucional</h1>
+
+    <h2>Quem somos</h2>
+    <p>A FaTech é uma instituição de ensino superior comprometida com a excelência acadêmica e a formação de profissionais capacitados para enfrentar os desafios do mercado de trabalho.</p>
+
+    <h2>Missão, visão e valores</h2>
+    <table>
+      <tr><th style="width:140px">Missão</th><td>Formar profissionais de tecnologia preparados para transformar a sociedade.</td></tr>
+      <tr><th>Visão</th><td>Ser referência regional em educação tecnológica.</td></tr>
+      <tr><th>Valores</th><td>Ética, inovação, excelência e compromisso com o aluno.</td></tr>
+    </table>
+
+    <svg class="circuito" viewBox="0 0 600 12" preserveAspectRatio="none" width="100%" height="12" aria-hidden="true">
+    <path d="M0 6 H220 L232 2 H300 L308 6 H600" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="232" cy="2" r="2.5" fill="#fff" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="308" cy="6" r="2.5" fill="#f28c28" stroke="#f28c28"/>
+  </svg>
+
+    <h2>Nossa identidade</h2>
+    <p>O “F” conectado a linhas de circuito e a uma engrenagem representa a união entre conhecimento, tecnologia e prática.</p>
+    <div class="hero"><img src="{{ url_for('static', filename='img/banner.jpg') }}" alt="Logo da FaTech na fachada da faculdade"></div>
+{% endblock %}

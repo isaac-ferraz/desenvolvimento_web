@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Vestibular{% endblock %}
+{% block content %}
+    <h1>Vestibular</h1>
+    <p>Faça sua inscrição e comece a construir seu futuro em tecnologia.</p>
+
+    <h2>Etapas</h2>
+    <table>
+      <tr><th>Etapa</th><th>Data</th></tr>
+      <tr><td>Inscrições</td><td>15/10 a 30/10</td></tr>
+      <tr><td>Prova</td><td>08/11</td></tr>
+      <tr><td>Resultado</td><td>15/11</td></tr>
+      <tr><td>Matrícula</td><td>18/11 a 25/11</td></tr>
+    </table>
+
+    <h2>Inscrição</h2>
+    <form action="{{ url_for('enviar') }}" method="post">
+      <input type="hidden" name="origem" value="vestibular">
+      <label for="nome">Nome completo</label>
+      <input type="text" id="nome" name="nome" required>
+      <label for="email">E-mail</label>
+      <input type="email" id="email" name="email" required>
+      <label for="curso">Curso desejado</label>
+      <select id="curso" name="curso">
+        <option>Desenvolvimento de Software Multiplataforma</option>
+        <option>Análise e Desenvolvimento de Sistemas</option>
+        <option>Gestão da Tecnologia da Informação</option>
+      </select>
+      <br><button class="botao" type="submit">Enviar inscrição</button>
+    </form>
+{% endblock %}

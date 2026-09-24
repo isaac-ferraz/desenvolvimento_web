@@ -2,4 +2,7 @@ venv/
 __pycache__/
 *.pyc
 .env
-requirements.txt
+.venv/
+.DS_Store
+.idea/
+.vscode/

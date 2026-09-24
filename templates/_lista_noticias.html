@@ -1,0 +1,14 @@
+<div class="noticias">
+  {% for n in lista %}
+  <article class="noticia">
+    <a class="noticia-img" href="{{ url_for('noticia', slug=n.slug) }}">
+      <img src="{{ url_for('static', filename='img/campus/' ~ n.imagem ~ '.svg') }}" alt="" width="800" height="500">
+    </a>
+    <div class="noticia-texto">
+      <div class="noticia-meta"><span class="tag">{{ n.categoria }}</span> <time>{{ n.data|data_br }}</time></div>
+      <h3><a href="{{ url_for('noticia', slug=n.slug) }}">{{ n.titulo }}</a></h3>
+      <p>{{ n.resumo }}</p>
+    </div>
+  </article>
+  {% endfor %}
+</div>

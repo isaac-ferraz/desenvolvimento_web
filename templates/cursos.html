@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Cursos{% endblock %}
+{% block content %}
+    <h1>Cursos</h1>
+    <p>Cursos superiores de tecnologia, com aulas práticas e projetos integradores.</p>
+
+    <h2>Cursos oferecidos</h2>
+    <table>
+      <tr><th>Curso</th><th>Duração</th><th>Período</th><th>Vagas</th></tr>
+      <tr><td>Desenvolvimento de Software Multiplataforma</td><td>3 anos</td><td>Noturno</td><td>40</td></tr>
+      <tr><td>Análise e Desenvolvimento de Sistemas</td><td>3 anos</td><td>Matutino</td><td>40</td></tr>
+      <tr><td>Gestão da Tecnologia da Informação</td><td>3 anos</td><td>Noturno</td><td>40</td></tr>
+    </table>
+
+    <svg class="circuito" viewBox="0 0 600 12" preserveAspectRatio="none" width="100%" height="12" aria-hidden="true">
+    <path d="M0 6 H220 L232 2 H300 L308 6 H600" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="232" cy="2" r="2.5" fill="#fff" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="308" cy="6" r="2.5" fill="#f28c28" stroke="#f28c28"/>
+  </svg>
+
+    <h2>Desenvolvimento de Software Multiplataforma</h2>
+    <p>Formação para criar aplicações web, mobile e desktop, do banco de dados à interface.</p>
+    <ul>
+      <li>Lógica de programação e algoritmos</li>
+      <li>Desenvolvimento web (HTML, CSS, JavaScript)</li>
+      <li>Banco de dados e APIs</li>
+      <li>Engenharia de software e metodologias ágeis</li>
+    </ul>
+
+    <h2>Análise e Desenvolvimento de Sistemas</h2>
+    <p>Análise, projeto e implementação de sistemas de informação para empresas.</p>
+
+    <h2>Gestão da Tecnologia da Informação</h2>
+    <p>Gerenciamento de infraestrutura, projetos e equipes de TI.</p>
+
+    <p><a class="botao" href="{{ url_for('vestibular') }}">Quero me inscrever</a></p>
+{% endblock %}

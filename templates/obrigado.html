@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Mensagem enviada{% endblock %}
+{% block content %}
+    <h1>Recebemos seus dados!</h1>
+    <div class="destaque laranja">Obrigado. Entraremos em contato em breve.</div>
+
+    <h2>Dados enviados</h2>
+    <table>
+      {% for rotulo, valor in dados %}
+      <tr><th style="width:180px">{{ rotulo }}</th><td>{{ valor }}</td></tr>
+      {% else %}
+      <tr><td>Nenhum dado recebido.</td></tr>
+      {% endfor %}
+    </table>
+
+    <p><a class="botao azul" href="{{ url_for('index') }}">Voltar ao início</a></p>
+{% endblock %}

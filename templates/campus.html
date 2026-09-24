@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Campus{% endblock %}
+{% block content %}
+    <h1>Campus</h1>
+    <p>Um espaço pensado para aprender fazendo: laboratórios equipados, biblioteca, auditório e áreas de convivência.</p>
+
+    <h2>Estrutura</h2>
+    <div class="galeria">
+      <figure>
+        <img src="{{ url_for('static', filename='img/campus/fachada.svg') }}" alt="Fachada" width="800" height="500">
+        <figcaption><strong>Fachada</strong>Prédio principal, com secretaria, salas de aula e coordenação dos cursos.</figcaption>
+      </figure>
+      <figure>
+        <img src="{{ url_for('static', filename='img/campus/laboratorio.svg') }}" alt="Laboratórios de informática" width="800" height="500">
+        <figcaption><strong>Laboratórios de informática</strong>Computadores atualizados para aulas de programação, redes e banco de dados.</figcaption>
+      </figure>
+      <figure>
+        <img src="{{ url_for('static', filename='img/campus/biblioteca.svg') }}" alt="Biblioteca" width="800" height="500">
+        <figcaption><strong>Biblioteca</strong>Acervo de tecnologia, gestão e ciências, com espaço para estudo em grupo.</figcaption>
+      </figure>
+      <figure>
+        <img src="{{ url_for('static', filename='img/campus/auditorio.svg') }}" alt="Auditório" width="800" height="500">
+        <figcaption><strong>Auditório</strong>Palestras, eventos e a Semana de Tecnologia acontecem aqui.</figcaption>
+      </figure>
+      <figure>
+        <img src="{{ url_for('static', filename='img/campus/patio.svg') }}" alt="Pátio e convivência" width="800" height="500">
+        <figcaption><strong>Pátio e convivência</strong>Áreas verdes e bancos para intervalos entre as aulas.</figcaption>
+      </figure>
+      <figure>
+        <img src="{{ url_for('static', filename='img/campus/maker.svg') }}" alt="Espaço Maker" width="800" height="500">
+        <figcaption><strong>Espaço Maker</strong>Bancadas para prototipagem, eletrônica e projetos integradores.</figcaption>
+      </figure>
+    </div>
+
+    <svg class="circuito" viewBox="0 0 600 12" preserveAspectRatio="none" width="100%" height="12" aria-hidden="true">
+    <path d="M0 6 H220 L232 2 H300 L308 6 H600" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="232" cy="2" r="2.5" fill="#fff" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="308" cy="6" r="2.5" fill="#f28c28" stroke="#f28c28"/>
+  </svg>
+
+    <h2>Informações</h2>
+    <table>
+      <tr><th style="width:180px">Endereço</th><td>São José dos Campos – SP</td></tr>
+      <tr><th>Horário de visitas</th><td>Segunda a sexta, das 9h às 18h</td></tr>
+      <tr><th>Acessibilidade</th><td>Rampas, elevadores e banheiros adaptados</td></tr>
+    </table>
+
+    <p><a class="botao" href="{{ url_for('contato') }}">Agende uma visita</a></p>
+{% endblock %}

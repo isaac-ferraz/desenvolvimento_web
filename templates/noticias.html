@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Notícias{% endblock %}
+{% block content %}
+    <h1>Notícias</h1>
+    <p>Acompanhe o que acontece na FaTech: eventos, vestibular, estrutura e projetos dos alunos.</p>
+
+    <div class="filtros">
+      <a href="{{ url_for('noticias', q=q) }}"{% if not categoria %} class="ativo"{% endif %}>Todas</a>
+      {% for c in categorias %}
+      <a href="{{ url_for('noticias', categoria=c, q=q) }}"{% if categoria == c %} class="ativo"{% endif %}>{{ c }}</a>
+      {% endfor %}
+    </div>
+
+    {% if q or categoria %}
+    <div class="destaque">
+      {{ lista|length }} resultado(s){% if q %} para “{{ q }}”{% endif %}{% if categoria %} em {{ categoria }}{% endif %}.
+      <a href="{{ url_for('noticias') }}">Limpar filtros</a>
+    </div>
+    {% endif %}
+
+    {% if lista %}
+      {% include "_lista_noticias.html" %}
+    {% else %}
+      <p>Nenhuma notícia encontrada.</p>
+    {% endif %}
+{% endblock %}

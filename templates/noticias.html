@@ -4,23 +4,19 @@
     <h1>Notícias</h1>
     <p>Acompanhe o que acontece na FaTech: eventos, vestibular, estrutura e projetos dos alunos.</p>
 
-    <div class="filtros">
-      <a href="{{ url_for('noticias', q=q) }}"{% if not categoria %} class="ativo"{% endif %}>Todas</a>
+    {# Na versão estática (GitHub Pages) a busca e os filtros são aplicados por static/js/site.js. #}
+    <div class="filtros" id="filtros-noticias">
+      <a href="{{ url_for('noticias', q=q) }}" data-categoria=""{% if not categoria %} class="ativo"{% endif %}>Todas</a>
       {% for c in categorias %}
-      <a href="{{ url_for('noticias', categoria=c, q=q) }}"{% if categoria == c %} class="ativo"{% endif %}>{{ c }}</a>
+      <a href="{{ url_for('noticias', categoria=c, q=q) }}" data-categoria="{{ c }}"{% if categoria == c %} class="ativo"{% endif %}>{{ c }}</a>
       {% endfor %}
     </div>
 
-    {% if q or categoria %}
-    <div class="destaque">
-      {{ lista|length }} resultado(s){% if q %} para “{{ q }}”{% endif %}{% if categoria %} em {{ categoria }}{% endif %}.
+    <div class="destaque" id="resultado-busca"{% if not (q or categoria) %} hidden{% endif %}>
+      <span>{{ lista|length }} resultado(s){% if q %} para “{{ q }}”{% endif %}{% if categoria %} em {{ categoria }}{% endif %}.</span>
       <a href="{{ url_for('noticias') }}">Limpar filtros</a>
     </div>
-    {% endif %}
 
-    {% if lista %}
-      {% include "_lista_noticias.html" %}
-    {% else %}
-      <p>Nenhuma notícia encontrada.</p>
-    {% endif %}
+    {% include "_lista_noticias.html" %}
+    <p id="sem-resultados"{% if lista %} hidden{% endif %}>Nenhuma notícia encontrada.</p>
 {% endblock %}

@@ -1,6 +1,6 @@
 <div class="noticias">
   {% for n in lista %}
-  <article class="noticia">
+  <article class="noticia" data-categoria="{{ n.categoria }}" data-busca="{{ (n.titulo ~ ' ' ~ n.resumo ~ ' ' ~ n.corpo|join(' '))|lower }}">
     <a class="noticia-img" href="{{ url_for('noticia', slug=n.slug) }}">
       <img src="{{ url_for('static', filename='img/campus/' ~ n.imagem ~ '.svg') }}" alt="" width="800" height="500">
     </a>

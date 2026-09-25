@@ -14,7 +14,7 @@
     </table>
 
     <h2>Inscrição</h2>
-    <form action="{{ url_for('enviar') }}" method="post">
+    <form action="{{ url_for('enviar') }}" method="get">
       <input type="hidden" name="origem" value="vestibular">
       <label for="nome">Nome completo</label>
       <input type="text" id="nome" name="nome" required>

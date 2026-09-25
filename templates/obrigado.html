@@ -5,7 +5,8 @@
     <div class="destaque laranja">Obrigado. Entraremos em contato em breve.</div>
 
     <h2>Dados enviados</h2>
-    <table>
+    {# Na versão estática (GitHub Pages) a tabela é preenchida por static/js/site.js. #}
+    <table id="dados-enviados"{% if not dados %} data-vazio{% endif %}>
       {% for rotulo, valor in dados %}
       <tr><th style="width:180px">{{ rotulo }}</th><td>{{ valor }}</td></tr>
       {% else %}

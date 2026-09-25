@@ -314,3 +314,5 @@ form .botao { margin-top: 18px; }
     .noticia { flex-direction: column; gap: 10px; }
     .noticia-img { flex-basis: auto; width: 100%; }
 }
+
+[hidden] { display: none !important; }

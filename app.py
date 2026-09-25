@@ -41,7 +41,7 @@ def index():
     return render_template("index.html", ultimas=base_noticias.NOTICIAS[:3])
 
 
-@app.route("/noticias")
+@app.route("/noticias/")
 def noticias():
     q = request.args.get("q", "")
     categoria = request.args.get("categoria", "")
@@ -54,7 +54,7 @@ def noticias():
     )
 
 
-@app.route("/noticias/<slug>")
+@app.route("/noticias/<slug>/")
 def noticia(slug):
     item = base_noticias.por_slug(slug)
     if item is None:
@@ -63,34 +63,36 @@ def noticia(slug):
     return render_template("noticia.html", n=item, outras=outras)
 
 
-@app.route("/cursos")
+@app.route("/cursos/")
 def cursos():
     return render_template("cursos.html")
 
 
-@app.route("/institucional")
+@app.route("/institucional/")
 def institucional():
     return render_template("institucional.html")
 
 
-@app.route("/campus")
+@app.route("/campus/")
 def campus():
     return render_template("campus.html")
 
 
-@app.route("/vestibular")
+@app.route("/vestibular/")
 def vestibular():
     return render_template("vestibular.html")
 
 
-@app.route("/contato")
+@app.route("/contato/")
 def contato():
     return render_template("contato.html")
 
 
-@app.route("/enviar", methods=["POST"])
+# Os formulários usam GET para funcionar também na versão estática (GitHub Pages),
+# onde a página de confirmação lê os dados da URL via JavaScript.
+@app.route("/enviar/")
 def enviar():
-    dados = [(ROTULOS.get(chave, chave), valor) for chave, valor in request.form.items()]
+    dados = [(ROTULOS.get(chave, chave), valor) for chave, valor in request.args.items()]
     return render_template("obrigado.html", dados=dados)
 
 

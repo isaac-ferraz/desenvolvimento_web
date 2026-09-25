@@ -11,7 +11,7 @@
     </table>
 
     <h2>Envie uma mensagem</h2>
-    <form action="{{ url_for('enviar') }}" method="post">
+    <form action="{{ url_for('enviar') }}" method="get">
       <input type="hidden" name="origem" value="contato">
       <label for="nome">Nome</label>
       <input type="text" id="nome" name="nome" required>

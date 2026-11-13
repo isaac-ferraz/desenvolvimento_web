@@ -107,6 +107,7 @@ Já dentro da instância do banco (Tutorial 2):
 
 ```bash
 sudo systemctl status mysql        # tem que estar "active (running)"; q para sair
+free -m                            # memória e swap (o swap tem que aparecer com 2047)
 sudo mysql desenv_web -e "SELECT * FROM envios ORDER BY id DESC;"
 ```
 
@@ -169,6 +170,7 @@ Se o primeiro comando disser `succeeded` e o segundo mostrar quantos registros e
 | O que aparece | Causa provável | Como resolver |
 |---------------|----------------|---------------|
 | Painel: *Não foi possível conectar ao banco de dados* | Instância do banco desligada ou MySQL parado | Ligue a instância; no banco, `sudo systemctl start mysql` |
+| SSH do banco não responde (`banner exchange`) e o MySQL cai | Falta de memória: o kernel matou o MySQL (confira com `journalctl -k -b -1 \| grep -i "out of memory"`) | Reinicie a instância pelo console; confira o swap (`swapon --show`) e o `zz-memoria.cnf` |
 | Log: `Can't connect to MySQL server ... (timed out)` | Security Group do banco não libera a 3306 | Regra de entrada **MySQL/Aurora (3306)** com origem na aplicação |
 | Log: `Can't connect to MySQL server ... (Connection refused)` | MySQL parado ou `bind-address = 127.0.0.1` | `sudo systemctl start mysql` e confira o `bind-address` |
 | Log: `Access denied for user 'fatech'` | Senha errada no `.env` | Corrija o `DB_PASSWORD` e reinicie o site |
@@ -196,9 +198,21 @@ Os erros de banco aparecem no log do site: `tail -50 ~/fatech.log`.
 
 #### 1. Na instância do banco
 
+A t3.micro tem só 1 GB de RAM. Sem swap, uma atualização automática do Ubuntu junto com o MySQL
+estoura a memória: o kernel mata o MySQL e a instância trava. Por isso, crie 2 GB de swap e
+desligue o `performance_schema` (monitoramento interno do MySQL que gasta uns 200 MB):
+
+```bash
+sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile
+sudo mkswap /swapfile && sudo swapon /swapfile
+echo "/swapfile none swap sw 0 0" | sudo tee -a /etc/fstab        # mantém depois do reboot
+```
+
 ```bash
 sudo apt update && sudo apt install -y mysql-server
 sudo sed -i 's/^bind-address.*/bind-address = 0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
+printf "[mysqld]\nperformance_schema = OFF\n" | sudo tee /etc/mysql/mysql.conf.d/zz-memoria.cnf
+sudo systemctl enable mysql                                        # sobe junto com a instância
 sudo systemctl restart mysql
 curl -fsSLO https://raw.githubusercontent.com/isaac-ferraz/desenvolvimento_web/main/schema.sql
 sudo mysql < schema.sql

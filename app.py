@@ -1,5 +1,6 @@
 from flask import Flask, abort, render_template, request
 
+import banco
 import noticias as base_noticias
 
 app = Flask(__name__)
@@ -91,7 +92,13 @@ def contato():
 @app.route("/enviar", methods=["POST"])
 def enviar():
     dados = [(ROTULOS.get(chave, chave), valor) for chave, valor in request.form.items()]
-    return render_template("obrigado.html", dados=dados)
+    try:
+        banco.salvar_envio(request.form)
+        salvo = True
+    except banco.ErroBanco:
+        app.logger.exception("Não foi possível salvar o envio no banco")
+        salvo = False
+    return render_template("obrigado.html", dados=dados, salvo=salvo)
 
 
 if __name__ == "__main__":

@@ -3,6 +3,9 @@
 {% block content %}
     <h1>Recebemos seus dados!</h1>
     <div class="destaque laranja">Obrigado. Entraremos em contato em breve.</div>
+    {% if not salvo %}
+    <div class="destaque">Não conseguimos registrar seus dados no sistema agora. Tente novamente em alguns minutos.</div>
+    {% endif %}
 
     <h2>Dados enviados</h2>
     <table>

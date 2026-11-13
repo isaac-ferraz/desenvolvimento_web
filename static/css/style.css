@@ -126,6 +126,8 @@ img { max-width: 100%; height: auto; display: block; }
     font-weight: 600;
 }
 .lateral-botao:hover { background: var(--laranja-esc); color: #fff; }
+.lateral-botao.azul { margin-top: 10px; background: var(--azul); }
+.lateral-botao.azul:hover { background: var(--navy); }
 
 .principal { flex: 1; padding: 24px 32px 40px; min-width: 0; }
 

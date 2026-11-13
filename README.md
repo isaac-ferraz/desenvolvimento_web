@@ -39,16 +39,26 @@ O `app.py` escuta em `0.0.0.0:5000`, então o site fica em `http://<IP público>
 Os formulários de **Vestibular** e **Contato** gravam na tabela `envios` do banco `desenv_web`,
 e a página **Painel de Admin** (`/admin`) lista todos os registros.
 
+> **Os IPs, nomes de chave, usuário e senha deste README são exemplos.** Troque pelos da sua conta:
+
+| Exemplo | O que é | Onde achar o valor real |
+|---------|---------|-------------------------|
+| `203.0.113.10` | IP público (Elastic IP) da aplicação | Console do EC2 → instância da aplicação → **Endereço IPv4 público** |
+| `172.31.32.10` | IP privado da aplicação | Console do EC2 → instância da aplicação → **Endereço IPv4 privado** |
+| `172.31.16.20` | IP privado do banco | Console do EC2 → instância do banco → **Endereço IPv4 privado** |
+| `chave-aplicacao.pem`, `chave-banco.pem` | Chaves SSH das instâncias | Arquivos `.pem` baixados quando você criou cada instância |
+| `usuario_app` / `troque-esta-senha` | Usuário e senha do MySQL usados pelo site | Os que você definiu no `CREATE USER`; ficam só no `.env` |
+
 ```
  Navegador ───► Aplicação (Flask)                ───► Banco (MySQL 8.4)
-                54.174.129.182:5000                    172.31.20.56:3306
+                203.0.113.10:5000                      172.31.16.20:3306
                 IP público fixo (Elastic IP)           IP PRIVADO (não muda)
 ```
 
 | Instância | IP público | IP privado | Chave SSH |
 |-----------|------------|------------|-----------|
-| Aplicação (`webServer-isaac`) | 54.174.129.182 (fixo) | 172.31.33.144 | `webServer-isaacferraz.pem` |
-| Banco de dados (MySQL 8.4)    | **muda a cada reinício** | 172.31.20.56 | `database-ads.pem` |
+| Aplicação (`webServer-isaac`) | 203.0.113.10 (fixo) | 172.31.32.10 | `chave-aplicacao.pem` |
+| Banco de dados (MySQL 8.4)    | **muda a cada reinício** | 172.31.16.20 | `chave-banco.pem` |
 
 ### O IP do banco mudou. Muda alguma coisa?
 
@@ -57,7 +67,7 @@ e o IP privado continua o mesmo quando a instância é parada e ligada de novo. 
 
 | O que você quer fazer | Qual IP do banco usar | Muda quando o banco reinicia? |
 |-----------------------|-----------------------|-------------------------------|
-| Site e Painel de Admin funcionarem | privado `172.31.20.56` (já está no `.env`) | **Não** |
+| Site e Painel de Admin funcionarem | privado `172.31.16.20` (já está no `.env`) | **Não** |
 | Entrar no banco por SSH do seu PC | público (pegue no console) | **Sim** → [Tutorial 2](#tutorial-2--entrar-no-banco-por-ssh-com-o-ip-novo) |
 | Abrir o banco no Workbench/DBeaver | nenhum: passa pela aplicação | **Não** → [Tutorial 4](#tutorial-4--abrir-o-banco-no-mysql-workbench) |
 
@@ -71,7 +81,7 @@ O IP privado só muda se a instância do banco for **encerrada** (Terminate) e v
 2. Entre na aplicação (o IP dela é fixo):
 
    ```bash
-   ssh -i ~/Downloads/webServer-isaacferraz.pem ubuntu@54.174.129.182
+   ssh -i ~/Downloads/chave-aplicacao.pem ubuntu@203.0.113.10
    ```
 
 3. Suba o site em segundo plano (continua no ar depois que você fechar o SSH):
@@ -81,7 +91,7 @@ O IP privado só muda se a instância do banco for **encerrada** (Terminate) e v
    nohup venv/bin/python app.py > ~/fatech.log 2>&1 &
    ```
 
-4. Abra http://54.174.129.182:5000/admin. Se aparecer a tabela de registros (mesmo vazia),
+4. Abra http://203.0.113.10:5000/admin. Se aparecer a tabela de registros (mesmo vazia),
    a aplicação está conectada ao banco.
 
 Para ver os logs: `tail -f ~/fatech.log`. Para parar o site: `pkill -f "python app.py"`.
@@ -92,8 +102,8 @@ Para ver os logs: `tail -f ~/fatech.log`. Para parar o site: `pkill -f "python a
 2. No seu PC:
 
    ```bash
-   chmod 400 ~/Downloads/database-ads.pem      # só na primeira vez
-   ssh -i ~/Downloads/database-ads.pem ubuntu@<IP público do banco>
+   chmod 400 ~/Downloads/chave-banco.pem      # só na primeira vez
+   ssh -i ~/Downloads/chave-banco.pem ubuntu@<IP público do banco>
    ```
 
 3. Como o IP é novo, o SSH pergunta `Are you sure you want to continue connecting?` → digite `yes`.
@@ -124,41 +134,41 @@ DELETE FROM envios WHERE id = 3;   -- apaga um registro (cuidado: não tem como 
 exit
 ```
 
-O usuário `fatech`, usado pela aplicação, só pode **ler e inserir**. Para apagar ou alterar dados,
+O usuário `usuario_app`, usado pela aplicação, só pode **ler e inserir**. Para apagar ou alterar dados,
 use o `sudo mysql` como acima.
 
 ### Tutorial 4 — Abrir o banco no MySQL Workbench
 
-O usuário `fatech` só aceita conexões de dentro da AWS (`172.31.%`), então o Workbench conecta
+O usuário `usuario_app` só aceita conexões de dentro da AWS (`172.31.%`), então o Workbench conecta
 **passando pela instância da aplicação**. Assim você nunca precisa do IP público do banco.
 
 Em **Database → Manage Connections → New**, escolha o método **Standard TCP/IP over SSH**:
 
 | Campo | Valor |
 |-------|-------|
-| SSH Hostname | `54.174.129.182:22` |
+| SSH Hostname | `203.0.113.10:22` |
 | SSH Username | `ubuntu` |
-| SSH Key File | `webServer-isaacferraz.pem` |
-| MySQL Hostname | `172.31.20.56` |
+| SSH Key File | `chave-aplicacao.pem` |
+| MySQL Hostname | `172.31.16.20` |
 | MySQL Server Port | `3306` |
-| Username | `fatech` |
+| Username | `usuario_app` |
 | Password | o `DB_PASSWORD` do `.env` |
 | Default Schema | `desenv_web` |
 
 Sem Workbench, dá para fazer o mesmo por um túnel no terminal (deixe-o aberto enquanto usa):
 
 ```bash
-ssh -i ~/Downloads/webServer-isaacferraz.pem -N -L 3310:172.31.20.56:3306 ubuntu@54.174.129.182
+ssh -i ~/Downloads/chave-aplicacao.pem -N -L 3310:172.31.16.20:3306 ubuntu@203.0.113.10
 ```
 
-e conectar o DBeaver, ou qualquer outro cliente, em `127.0.0.1`, porta `3310`, usuário `fatech`.
+e conectar o DBeaver, ou qualquer outro cliente, em `127.0.0.1`, porta `3310`, usuário `usuario_app`.
 
 ### Tutorial 5 — Testar a conexão da aplicação com o banco
 
 Dentro da instância da aplicação:
 
 ```bash
-nc -zv 172.31.20.56 3306           # a porta do banco responde?
+nc -zv 172.31.16.20 3306           # a porta do banco responde?
 cd ~/desenvolvimento_web
 venv/bin/python -c "import banco; print(len(banco.listar_envios()), 'registro(s)')"
 ```
@@ -173,7 +183,7 @@ Se o primeiro comando disser `succeeded` e o segundo mostrar quantos registros e
 | SSH do banco não responde (`banner exchange`) e o MySQL cai | Falta de memória: o kernel matou o MySQL (confira com `journalctl -k -b -1 \| grep -i "out of memory"`) | Reinicie a instância pelo console; confira o swap (`swapon --show`) e o `zz-memoria.cnf` |
 | Log: `Can't connect to MySQL server ... (timed out)` | Security Group do banco não libera a 3306 | Regra de entrada **MySQL/Aurora (3306)** com origem na aplicação |
 | Log: `Can't connect to MySQL server ... (Connection refused)` | MySQL parado ou `bind-address = 127.0.0.1` | `sudo systemctl start mysql` e confira o `bind-address` |
-| Log: `Access denied for user 'fatech'` | Senha errada no `.env` | Corrija o `DB_PASSWORD` e reinicie o site |
+| Log: `Access denied for user 'usuario_app'` | Senha errada no `.env` | Corrija o `DB_PASSWORD` e reinicie o site |
 | Log: `Table 'desenv_web.envios' doesn't exist` | Tabela não foi criada | Rode o `schema.sql` (passo 1 abaixo) |
 | `ssh: connect to host ... Connection timed out` | IP público do banco mudou ou instância desligada | Pegue o IP novo ([Tutorial 2](#tutorial-2--entrar-no-banco-por-ssh-com-o-ip-novo)) |
 | `UNPROTECTED PRIVATE KEY FILE!` | Permissão da chave aberta demais | `chmod 400 arquivo.pem` |
@@ -216,8 +226,8 @@ sudo systemctl enable mysql                                        # sobe junto 
 sudo systemctl restart mysql
 curl -fsSLO https://raw.githubusercontent.com/isaac-ferraz/desenvolvimento_web/main/schema.sql
 sudo mysql < schema.sql
-sudo mysql -e "CREATE USER 'fatech'@'172.31.%' IDENTIFIED BY '<senha>';
-               GRANT SELECT, INSERT ON desenv_web.* TO 'fatech'@'172.31.%';"
+sudo mysql -e "CREATE USER 'usuario_app'@'172.31.%' IDENTIFIED BY 'troque-esta-senha';
+               GRANT SELECT, INSERT ON desenv_web.* TO 'usuario_app'@'172.31.%';"
 ```
 
 No Security Group do banco, libere **MySQL/Aurora (3306/tcp)** para a instância da aplicação.

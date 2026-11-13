@@ -69,10 +69,11 @@ source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env    # e preencha DB_PASSWORD
 chmod 600 .env
+python app.py
 ```
 
-O site roda como serviço (`/etc/systemd/system/fatech.service`), então continua no ar
-depois de fechar o SSH ou reiniciar a instância:
+**Opcional:** para o site continuar no ar depois de fechar o SSH ou reiniciar a instância,
+crie o serviço `/etc/systemd/system/fatech.service`:
 
 ```ini
 [Unit]

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Painel de Admin{% endblock %}
+{% block content %}
+    <h1>Painel de Admin</h1>
+    <p>Todos os registros inseridos no banco de dados <strong>desenv_web</strong> (tabela <strong>envios</strong>), do mais recente para o mais antigo.</p>
+
+    {% if erro %}
+    <div class="destaque laranja">Não foi possível conectar ao banco de dados. Verifique se a instância do banco está ligada.</div>
+    {% else %}
+    <table class="resumo">
+      <tr><th>Total de registros</th><th>Inscrições no vestibular</th><th>Mensagens de contato</th></tr>
+      <tr><td>{{ envios|length }}</td><td>{{ totais.vestibular }}</td><td>{{ totais.contato }}</td></tr>
+    </table>
+
+    <h2>Registros</h2>
+    <div class="tabela-rolagem">
+      <table class="registros">
+        <tr>
+          <th>#</th>
+          <th>Data</th>
+          <th>Formulário</th>
+          <th>Nome</th>
+          <th>E-mail</th>
+          <th>Curso</th>
+          <th>Mensagem</th>
+        </tr>
+        {% for e in envios %}
+        <tr>
+          <td>{{ e.id }}</td>
+          <td class="sem-quebra">{{ e.criado_em.strftime('%d/%m/%Y %H:%M') }}</td>
+          <td><span class="tag{% if e.origem == 'contato' %} laranja{% endif %}">{{ e.origem }}</span></td>
+          <td>{{ e.nome }}</td>
+          <td><a href="mailto:{{ e.email }}">{{ e.email }}</a></td>
+          <td>{{ e.curso or '—' }}</td>
+          <td>{{ e.mensagem or '—' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7">Nenhum registro no banco ainda.</td></tr>
+        {% endfor %}
+      </table>
+    </div>
+    {% endif %}
+{% endblock %}

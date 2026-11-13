@@ -101,5 +101,20 @@ def enviar():
     return render_template("obrigado.html", dados=dados, salvo=salvo)
 
 
+@app.route("/admin")
+def admin():
+    try:
+        envios = banco.listar_envios()
+        erro = False
+    except banco.ErroBanco:
+        app.logger.exception("Não foi possível ler os envios do banco")
+        envios, erro = [], True
+    totais = {
+        "vestibular": sum(1 for e in envios if e["origem"] == "vestibular"),
+        "contato": sum(1 for e in envios if e["origem"] == "contato"),
+    }
+    return render_template("admin.html", envios=envios, totais=totais, erro=erro)
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

@@ -314,3 +314,11 @@ form .botao { margin-top: 18px; }
     .noticia { flex-direction: column; gap: 10px; }
     .noticia-img { flex-basis: auto; width: 100%; }
 }
+
+/* ---------- Painel de Admin ---------- */
+.resumo td { font-size: 22px; font-weight: 600; color: var(--navy); }
+.tabela-rolagem { overflow-x: auto; }
+.registros { min-width: 760px; }
+.registros td { vertical-align: top; }
+.sem-quebra { white-space: nowrap; }
+.tag.laranja { background: var(--laranja-esc); }
